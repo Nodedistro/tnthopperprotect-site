@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const helmet = require('helmet');
 const fs = require('fs/promises');
 const path = require('path');
@@ -66,6 +66,14 @@ app.post('/api/issues', async (req, res) => {
 });
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
+
+app.get('/wiki', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'wiki.html'));
+});
+
+app.get('/issues', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'issues.html'));
+});
 
 app.use((_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
