@@ -50,16 +50,47 @@ jobs:
       - name: Build
         run: gradle build --stacktrace --no-daemon
 
-      - name: Upload distributable JAR
+      - name: Prepare verified distributable JAR
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          mkdir -p dist
+
+          mapfile -t jars < <(find build/libs -maxdepth 1 -type f -name '*.jar' \
+            ! -name '*-sources.jar' \
+            ! -name '*-dev.jar' \
+            ! -name '*-shadow.jar' | sort)
+
+          if [ "${#jars[@]}" -ne 1 ]; then
+            echo "Expected exactly one distributable JAR, found ${#jars[@]}:"
+            printf '%s\n' "${jars[@]}"
+            exit 1
+          fi
+
+          jar_file="${jars[0]}"
+          echo "Selected distributable: $jar_file"
+
+          if [ "${{ matrix.loader }}" = "fabric" ]; then
+            echo "Checking Fabric metadata..."
+            jar tf "$jar_file" | tee /tmp/jar-contents.txt
+            grep -qx 'fabric.mod.json' /tmp/jar-contents.txt || {
+              echo "ERROR: Fabric distributable does not contain fabric.mod.json at the JAR root."
+              exit 1
+            }
+            echo "fabric.mod.json found."
+            unzip -p "$jar_file" fabric.mod.json
+          fi
+
+          cp "$jar_file" "dist/TNT-Hopper-Protect-${{ matrix.loader }}-2.0.0-mc26.1.2.jar"
+
+      - name: Upload verified distributable JAR
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: TNT-Hopper-Protect-${{ matrix.loader }}-26.1.2
-          path: |
-            multiloader/${{ matrix.loader }}/build/libs/*.jar
-            !multiloader/${{ matrix.loader }}/build/libs/*-sources.jar
-            !multiloader/${{ matrix.loader }}/build/libs/*-dev.jar
-            !multiloader/${{ matrix.loader }}/build/libs/*-shadow.jar
+          path: multiloader/${{ matrix.loader }}/dist/*.jar
           if-no-files-found: error
           retention-days: 30
 
