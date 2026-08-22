@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.17-SNAPSHOT'
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'maven-publish'
 }
 
@@ -16,20 +16,62 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 }
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
-tasks.named('processResources') {
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+}
+
+processResources {
     inputs.property 'version', project.version
+    inputs.property 'minecraft_version', project.minecraft_version
+    inputs.property 'loader_version', project.loader_version
+
     filesMatching('fabric.mod.json') {
-        expand 'version': project.version
+        expand(
+            version: project.version,
+            minecraft_version: project.minecraft_version,
+            loader_version: project.loader_version
+        )
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.release = 25
+loom {
+    mixin {
+        defaultRefmapName = 'tnthopperprotect.refmap.json'
+    }
+}
+
+tasks.register('prepareModrinthJar') {
+    dependsOn tasks.named('remapJar')
+
+    doLast {
+        def inputJar = tasks.named('remapJar').get().archiveFile.get().asFile
+        if (!inputJar.exists()) {
+            throw new GradleException("Fabric remapped JAR was not created: ${inputJar}")
+        }
+
+        def hasMetadata = zipTree(inputJar).matching { include 'fabric.mod.json' }.files.size() == 1
+        if (!hasMetadata) {
+            throw new GradleException('Refusing to package Fabric build: fabric.mod.json is missing from the remapped JAR root.')
+        }
+
+        def outDir = layout.buildDirectory.dir('modrinth').get().asFile
+        delete outDir
+        outDir.mkdirs()
+
+        copy {
+            from inputJar
+            into outDir
+            rename { "TNT-Hopper-Protect-Fabric-${project.version}+mc${project.minecraft_version}.jar" }
+        }
+
+        println "Verified Modrinth Fabric JAR: ${new File(outDir, "TNT-Hopper-Protect-Fabric-${project.version}+mc${project.minecraft_version}.jar")}" 
+    }
 }

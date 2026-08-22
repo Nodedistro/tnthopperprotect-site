@@ -13,7 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(VehicleEntity.class)
 public abstract class VehicleEntityMixin {
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
-    private void tntHopperProtect$blockExplosionDamage(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if ((Object)this instanceof MinecartHopper && source.is(DamageTypeTags.IS_EXPLOSION)) cir.setReturnValue(false);
+    private void tntHopperProtect$protectHopperMinecart(
+            ServerLevel level,
+            DamageSource source,
+            float amount,
+            CallbackInfoReturnable<Boolean> cir
+    ) {
+        if ((Object) this instanceof MinecartHopper && source.is(DamageTypeTags.IS_EXPLOSION)) {
+            cir.setReturnValue(false);
+        }
     }
 }

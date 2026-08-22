@@ -3,11 +3,26 @@
   "id": "tnthopperprotect",
   "version": "${version}",
   "name": "TNT Hopper Protect",
-  "description": "Protects hopper minecarts from explosion damage while leaving normal block destruction unchanged.",
+  "description": "Protects hopper minecarts from explosion damage while allowing TNT to keep destroying normal blocks.",
   "authors": ["NodeDistro MC Plugins"],
-  "contact": {"homepage": "https://tnthopperprotect-site.nodedistro.com"},
+  "contact": {
+    "homepage": "https://tnthopperprotect-site.nodedistro.com",
+    "sources": "https://github.com/Nodedistro/tnthopperprotect-site",
+    "issues": "https://tnthopperprotect-site.nodedistro.com/issues"
+  },
   "license": "MIT",
   "environment": "*",
-  "mixins": ["tnthopperprotect.mixins.json"],
-  "depends": {"fabricloader": ">=0.19.0", "minecraft": "26.1.2", "java": ">=25"}
+  "entrypoints": {
+    "main": [
+      "com.nodedistro.tnthopperprotect.fabric.TNTHopperProtectFabric"
+    ]
+  },
+  "mixins": [
+    "tnthopperprotect.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=25"
+  }
 }

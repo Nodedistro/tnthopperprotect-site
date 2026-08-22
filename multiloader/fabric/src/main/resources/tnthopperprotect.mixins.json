@@ -1,7 +1,12 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "com.nodedistro.tnthopperprotect.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": ["VehicleEntityMixin"],
-  "injectors": {"defaultRequire": 1}
+  "mixins": [
+    "VehicleEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

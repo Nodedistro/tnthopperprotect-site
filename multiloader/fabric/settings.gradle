@@ -1,8 +1,9 @@
 pluginManagement {
     repositories {
-        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = 'https://maven.fabricmc.net/' }
         gradlePluginPortal()
         mavenCentral()
     }
 }
-rootProject.name = "TNT-Hopper-Protect-Fabric"
+
+rootProject.name = 'TNT-Hopper-Protect-Fabric'
