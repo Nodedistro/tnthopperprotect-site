@@ -47,11 +47,16 @@ jobs:
       - name: Verify Gradle version
         run: gradle --version
 
-      - name: Build
-        run: gradle build --stacktrace --no-daemon
+      - name: Build Fabric Modrinth JAR
+        if: matrix.loader == 'fabric'
+        run: gradle clean prepareModrinthJar --stacktrace --no-daemon
 
-      - name: Prepare verified distributable JAR
-        if: success()
+      - name: Build non-Fabric loader
+        if: matrix.loader != 'fabric'
+        run: gradle clean build --stacktrace --no-daemon
+
+      - name: Prepare non-Fabric distributable JAR
+        if: success() && matrix.loader != 'fabric'
         shell: bash
         run: |
           set -euo pipefail
@@ -69,24 +74,31 @@ jobs:
             exit 1
           fi
 
-          jar_file="${jars[0]}"
-          echo "Selected distributable: $jar_file"
+          cp "${jars[0]}" "dist/TNT-Hopper-Protect-${{ matrix.loader }}-2.0.0-mc26.1.2.jar"
 
-          if [ "${{ matrix.loader }}" = "fabric" ]; then
-            echo "Checking Fabric metadata..."
-            jar tf "$jar_file" | tee /tmp/jar-contents.txt
-            grep -qx 'fabric.mod.json' /tmp/jar-contents.txt || {
-              echo "ERROR: Fabric distributable does not contain fabric.mod.json at the JAR root."
-              exit 1
-            }
-            echo "fabric.mod.json found."
-            unzip -p "$jar_file" fabric.mod.json
-          fi
+      - name: Verify Fabric Modrinth JAR contents
+        if: success() && matrix.loader == 'fabric'
+        shell: bash
+        run: |
+          set -euo pipefail
+          jar_file="build/modrinth/TNT-Hopper-Protect-Fabric-2.0.0+mc26.1.2.jar"
+          test -f "$jar_file"
+          jar tf "$jar_file" | tee /tmp/fabric-jar-contents.txt
+          grep -qx 'fabric.mod.json' /tmp/fabric-jar-contents.txt
+          grep -qx 'tnthopperprotect.mixins.json' /tmp/fabric-jar-contents.txt
+          unzip -p "$jar_file" fabric.mod.json
 
-          cp "$jar_file" "dist/TNT-Hopper-Protect-${{ matrix.loader }}-2.0.0-mc26.1.2.jar"
+      - name: Upload Fabric verified JAR
+        if: success() && matrix.loader == 'fabric'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TNT-Hopper-Protect-fabric-26.1.2
+          path: multiloader/fabric/build/modrinth/TNT-Hopper-Protect-Fabric-2.0.0+mc26.1.2.jar
+          if-no-files-found: error
+          retention-days: 30
 
-      - name: Upload verified distributable JAR
-        if: success()
+      - name: Upload non-Fabric verified JAR
+        if: success() && matrix.loader != 'fabric'
         uses: actions/upload-artifact@v4
         with:
           name: TNT-Hopper-Protect-${{ matrix.loader }}-26.1.2
