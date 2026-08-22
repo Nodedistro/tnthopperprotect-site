@@ -39,10 +39,13 @@ jobs:
           java-version: '25'
           cache: gradle
 
-      - name: Set up Gradle 9.4
+      - name: Set up Gradle 9.5
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.4.0'
+          gradle-version: '9.5.0'
+
+      - name: Verify Gradle version
+        run: gradle --version
 
       - name: Build
         run: gradle build --stacktrace --no-daemon
