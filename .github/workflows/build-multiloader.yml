@@ -50,12 +50,16 @@ jobs:
       - name: Build
         run: gradle build --stacktrace --no-daemon
 
-      - name: Upload JAR
+      - name: Upload distributable JAR
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: TNT-Hopper-Protect-${{ matrix.loader }}-26.1.2
-          path: multiloader/${{ matrix.loader }}/build/libs/*.jar
+          path: |
+            multiloader/${{ matrix.loader }}/build/libs/*.jar
+            !multiloader/${{ matrix.loader }}/build/libs/*-sources.jar
+            !multiloader/${{ matrix.loader }}/build/libs/*-dev.jar
+            !multiloader/${{ matrix.loader }}/build/libs/*-shadow.jar
           if-no-files-found: error
           retention-days: 30
 
