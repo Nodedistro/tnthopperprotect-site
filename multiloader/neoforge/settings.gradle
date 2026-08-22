@@ -1,0 +1,8 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        maven { url = "https://maven.neoforged.net/releases" }
+    }
+}
+rootProject.name = "TNT-Hopper-Protect-NeoForge"

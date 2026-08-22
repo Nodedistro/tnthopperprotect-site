@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "tnthopperprotect",
+  "version": "${version}",
+  "name": "TNT Hopper Protect",
+  "description": "Protects hopper minecarts from explosion damage while leaving normal block destruction unchanged.",
+  "authors": ["NodeDistro MC Plugins"],
+  "contact": {"homepage": "https://tnthopperprotect-site.nodedistro.com"},
+  "license": "MIT",
+  "environment": "*",
+  "mixins": ["tnthopperprotect.mixins.json"],
+  "depends": {"fabricloader": ">=0.19.0", "minecraft": "26.1.2", "java": ">=25"}
+}

@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="tnthopperprotect"
+version="2.0.0"
+displayName="TNT Hopper Protect"
+displayURL="https://tnthopperprotect-site.nodedistro.com"
+authors="NodeDistro MC Plugins"
+description='''Protects hopper minecarts from explosion damage while keeping normal TNT block destruction enabled.'''
+
+[[mixins]]
+config="tnthopperprotect.mixins.json"
+
+[[dependencies.tnthopperprotect]]
+modId="neoforge"
+type="required"
+versionRange="[26.1.2.95,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.tnthopperprotect]]
+modId="minecraft"
+type="required"
+versionRange="[26.1.2]"
+ordering="NONE"
+side="BOTH"
