@@ -32,20 +32,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Gradle 8.14.x cannot itself run on Java 25 (class-file major 69).
-      # Run Gradle on Java 24; each project can still request its configured
-      # Java toolchain for compilation when its loader supports it.
-      - name: Set up Java 24 for Gradle
+      - name: Set up Java 25
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '24'
+          java-version: '25'
           cache: gradle
 
-      - name: Set up Gradle
+      - name: Set up Gradle 9.4
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.14.3'
+          gradle-version: '9.4.0'
 
       - name: Build
         run: gradle build --stacktrace --no-daemon
