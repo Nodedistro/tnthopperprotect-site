@@ -4,24 +4,22 @@ const loginForm = document.querySelector('#login-form');
 const updateForm = document.querySelector('#update-form');
 const loginStatus = document.querySelector('#login-status');
 const publishStatus = document.querySelector('#publish-status');
+const { apiUrl } = window.TNTHopperProtectApi;
 
-async function jsonFetch(url, options={}) {
-  const r = await fetch(url, { credentials: 'same-origin', ...options });
+async function jsonFetch(path, options={}) {
+  const r = await fetch(apiUrl(path), { ...options, credentials: 'include' });
   let body = {}; try { body = await r.json(); } catch {}
   if (!r.ok) throw new Error(body.error || `Request failed (${r.status})`);
   return body;
 }
 async function checkSession() {
-  try { await jsonFetch('/api/admin/session'); loginBox.hidden = true; dashboard.hidden = false; await loadHealth(); }
+  try { await jsonFetch('/api/admin/session'); loginBox.hidden = true; dashboard.hidden = false; showApiStatus(); }
   catch { loginBox.hidden = false; dashboard.hidden = true; }
 }
-async function loadHealth() {
-  try {
-    const h = await jsonFetch('/health');
-    document.querySelector('#health-status').innerHTML = `
-      <div class="status-row"><span>Storage</span><strong>${h.storage === 'supabase' || h.storage === 'local-json' ? '✅ Ready' : '⚠️ Needs Supabase'}</strong></div>
-      <div class="status-row"><span>Discord</span><strong>${h.discord ? '✅ Ready' : '⚠️ Not configured'}</strong></div>`;
-  } catch { document.querySelector('#health-status').textContent = 'Could not check configuration.'; }
+function showApiStatus() {
+  document.querySelector('#health-status').innerHTML = `
+    <div class="status-row"><span>API</span><strong>✅ Connected</strong></div>
+    <div class="status-row"><span>Admin session</span><strong>✅ Authenticated</strong></div>`;
 }
 loginForm?.addEventListener('submit', async e => {
   e.preventDefault(); loginStatus.textContent = 'Signing in…';
