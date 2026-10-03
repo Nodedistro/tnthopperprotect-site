@@ -49,17 +49,17 @@ loom {
 }
 
 tasks.register('prepareModrinthJar') {
-    dependsOn tasks.named('remapJar')
+    dependsOn tasks.named('jar')
 
     doLast {
-        def inputJar = tasks.named('remapJar').get().archiveFile.get().asFile
+        def inputJar = tasks.named('jar').get().archiveFile.get().asFile
         if (!inputJar.exists()) {
-            throw new GradleException("Fabric remapped JAR was not created: ${inputJar}")
+            throw new GradleException("Fabric JAR was not created: ${inputJar}")
         }
 
         def hasMetadata = zipTree(inputJar).matching { include 'fabric.mod.json' }.files.size() == 1
         if (!hasMetadata) {
-            throw new GradleException('Refusing to package Fabric build: fabric.mod.json is missing from the remapped JAR root.')
+            throw new GradleException('Refusing to package Fabric build: fabric.mod.json is missing from the JAR root.')
         }
 
         def outDir = layout.buildDirectory.dir('modrinth').get().asFile
