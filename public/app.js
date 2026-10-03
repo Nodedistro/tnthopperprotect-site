@@ -24,4 +24,10 @@ async function loadUpdates(){
 }
 const form=document.querySelector('#issue-form');
 if(form){form.addEventListener('submit',async e=>{e.preventDefault();const status=document.querySelector('#form-status');status.textContent='Submitting…';try{const data=Object.fromEntries(new FormData(form));const r=await fetch(apiUrl('/api/issues'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const body=await r.json();if(!r.ok){status.textContent=body.error||'Submission failed.';return;}status.textContent=`Report #${body.number} submitted successfully.`;form.reset();loadIssues();}catch{status.textContent='Submission failed.'}})}
+// Keep the public homepage aligned with the latest multi-loader release.
+document.querySelectorAll('.specs strong').forEach((node, index) => {
+  if (index === 0) node.textContent = 'Minecraft 26.3';
+  if (index === 1) node.textContent = '4.0';
+  if (index === 3) { node.firstChild.textContent = '26.4 '; node.querySelector('small')?.remove(); }
+});
 loadIssues(); loadUpdates();
