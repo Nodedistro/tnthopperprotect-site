@@ -1,7 +1,7 @@
 plugins { java }
 
 group = "com.nodedistro"
-version = "2.0.0"
+version = "4.0"
 
 repositories {
     mavenCentral()
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.100-stable")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 }
 
 java {

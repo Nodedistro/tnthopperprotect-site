@@ -18,7 +18,7 @@ public final class TNTHopperProtectPlugin extends JavaPlugin implements Listener
     public void onEnable() {
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);
-        getLogger().info("TNT Hopper Protect 2.0.0 enabled.");
+        getLogger().info("TNT Hopper Protect 4.0 enabled.");
     }
 
     private boolean shouldProtect(HopperMinecart minecart) {

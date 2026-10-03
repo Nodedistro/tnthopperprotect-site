@@ -10,6 +10,6 @@ public final class TNTHopperProtectFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("TNT Hopper Protect Fabric 2.0.0 loaded.");
+        LOGGER.info("TNT Hopper Protect Fabric 4.0 loaded.");
     }
 }

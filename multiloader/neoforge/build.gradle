@@ -3,13 +3,13 @@ plugins {
     id 'net.neoforged.moddev' version '2.0.144'
 }
 
-version = '2.0.0'
+version = '4.0'
 group = 'com.nodedistro'
 base { archivesName = 'TNT-Hopper-Protect-NeoForge' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(25) }
 
 neoForge {
-    version = '26.2.0.88'
+    version = '26.3.0.25-beta'
     mods { tnthopperprotect { sourceSet sourceSets.main } }
 }
 
