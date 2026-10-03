@@ -1,0 +1,36 @@
+name: Publish Modrinth releases
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview releases without publishing
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: modrinth-release-publisher
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test release sync
+        run: node --test scripts/sync-modrinth.test.cjs
+      - name: Publish new stable releases
+        env:
+          RELEASE_PUBLISH_SECRET: ${{ secrets.RELEASE_PUBLISH_SECRET }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/sync-modrinth.cjs --dry-run
+          else
+            node scripts/sync-modrinth.cjs
+          fi
