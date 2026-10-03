@@ -18,7 +18,13 @@ const targets = [
 
 async function main() {
   const headers = { Authorization: token, 'User-Agent': 'NodeDistro/TNTHopperProtect-release-publisher' };
-  const existing = await (await fetch(`https://api.modrinth.com/v2/project/${project}/version`, { headers })).json();
+  const projectInfoResponse = await fetch(`https://api.modrinth.com/v2/project/${project}`, { headers });
+  if (!projectInfoResponse.ok) throw new Error(`Could not resolve Modrinth project (${projectInfoResponse.status})`);
+  const projectInfo = await projectInfoResponse.json();
+  const projectId = projectInfo.id;
+  const existingResponse = await fetch(`https://api.modrinth.com/v2/project/${project}/version`, { headers });
+  if (!existingResponse.ok) throw new Error(`Could not read existing Modrinth versions (${existingResponse.status})`);
+  const existing = await existingResponse.json();
   for (const [loader, label] of targets) {
     if (existing.some(v => v.version_number === version && v.loaders?.includes(loader))) {
       console.log(`Skipping existing ${label} ${version}`);
@@ -34,7 +40,7 @@ async function main() {
       loaders: [loader.toLowerCase()],
       version_type: 'release',
       status: 'listed',
-      project_id: project,
+      project_id: projectId,
       file_parts: ['file'],
       primary_file: 'file',
       environment: 'server_only'
