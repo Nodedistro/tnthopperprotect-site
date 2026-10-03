@@ -1,24 +1,39 @@
-# TNT Hopper Protect Website
+# TNT Hopper Protect
 
-Official-style Node.js website for TNT Hopper Protect by NodeDistro MC Plugins.
+TNT Hopper Protect is a lightweight Minecraft plugin and mod that protects hopper minecarts from TNT explosions while keeping normal TNT block destruction enabled.
 
-## Includes
+## Features
 
-- Main landing page
-- Wiki/documentation page
-- Issue tracker with a working submission form
-- JSON file storage for submitted issues
-- Responsive design
+- Protects hopper minecarts from TNT explosions
+- TNT still explodes and destroys regular blocks normally
+- Helps protect hopper-minecart collection and transportation systems
+- Lightweight and focused, with no unnecessary gameplay systems
+- Supports all worlds or a selected-world allowlist on Paper
+- Simple configuration
+- Builds for Paper, Fabric, Forge, and NeoForge
 
-## Run locally
+## How it works
+
+Normally, an explosion can damage nearby blocks and hopper minecarts. TNT Hopper Protect changes only the hopper-minecart behavior: when an explosion would damage or destroy one, that destruction is prevented. The explosion itself is not cancelled, so surrounding blocks are still affected normally.
+
+## Paper configuration
+
+```yaml
+protect-hopper-minecarts: true
+enabled-worlds: []
+```
+
+An empty `enabled-worlds` list enables protection in every world. Add world names to limit protection to selected worlds. Restart after changing the configuration.
+
+## Releases and automatic announcements
+
+Releases are published on [Modrinth](https://modrinth.com/plugin/tnt-hopper-protect/versions). GitHub Actions checks Modrinth every 15 minutes and adds each new stable loader release to the website Updates page and configured Discord channel. It deduplicates by Modrinth version ID and requires the backend to confirm Discord delivery.
+
+## Website
 
 ```bash
 npm install
 npm start
 ```
 
-Then open `http://localhost:3000`.
-
-## Production
-
-Set the `PORT` environment variable if your host requires one. The issue tracker currently stores reports in `data/issues.json`, which is suitable for a small/self-hosted deployment. For serverless hosts or multiple instances, replace the JSON storage layer with a persistent database.
+Open `http://localhost:3000`.
