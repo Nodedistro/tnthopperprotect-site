@@ -12,6 +12,6 @@ gradle clean prepareModrinthJar --no-daemon
 
 Upload only:
 
-`build/modrinth/TNT-Hopper-Protect-Fabric-4.0+mc26.3.jar`
+`build/modrinth/TNT-Hopper-Protect-Fabric-4.0.0+mc26.3.jar`
 
 The build refuses to create this file unless `fabric.mod.json` is present at the root of the remapped Fabric JAR.

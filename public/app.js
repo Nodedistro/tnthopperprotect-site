@@ -27,7 +27,7 @@ if(form){form.addEventListener('submit',async e=>{e.preventDefault();const statu
 // Keep the public homepage aligned with the latest multi-loader release.
 document.querySelectorAll('.specs strong').forEach((node, index) => {
   if (index === 0) node.textContent = 'Minecraft 26.3';
-  if (index === 1) node.textContent = '4.0';
+  if (index === 1) node.textContent = '4.0.0';
   if (index === 3) { node.firstChild.textContent = '26.4 '; node.querySelector('small')?.remove(); }
 });
 loadIssues(); loadUpdates();

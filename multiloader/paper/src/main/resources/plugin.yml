@@ -1,5 +1,5 @@
 name: TNTHopperProtect
-version: 4.0
+version: 4.0.0
 main: com.nodedistro.tnthopperprotect.paper.TNTHopperProtectPlugin
 description: Protects hopper minecarts from explosions while leaving normal block explosion damage intact.
 author: NodeDistro MC Plugins
