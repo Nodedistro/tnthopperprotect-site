@@ -16,13 +16,13 @@ config="tnthopperprotect.mixins.json"
 [[dependencies.tnthopperprotect]]
 modId="neoforge"
 type="required"
-versionRange="[26.1.2.95,)"
+versionRange="[26.2.0.88,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.tnthopperprotect]]
 modId="minecraft"
 type="required"
-versionRange="[26.1.2]"
+versionRange="[26.2]"
 ordering="NONE"
 side="BOTH"

@@ -1,6 +1,6 @@
 # TNT Hopper Protect — Multi-loader
 
-Minecraft Java 26.1.2 builds for Paper, Fabric, NeoForge, and Forge.
+Minecraft Java 26.2 builds for Paper, Fabric, NeoForge, and Forge.
 
 Each platform has its own JAR. Paper goes in `plugins/`; Fabric/NeoForge/Forge go in `mods/`.
 
